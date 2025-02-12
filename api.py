@@ -44,7 +44,7 @@ class APIHandler:
         """
         func = FUNCTION_MAP.get(self.request.function)
         if not func:
-            return False, None, f'Function {self.request.function} not found'
+            return False, None, f"Function {self.request.function} not found"
         return func(db, self.request.data)
     
 
@@ -75,76 +75,76 @@ class APIHandler:
     @staticmethod
     def create_new_bundle(db, data=None) -> tuple[bool, any, str]:
         if 'Orders' not in data:
-            return False, '', '[Orders] not found'
+            return False, "", "[Orders] not found"
         
         from cruds import create_bundle
         
         success, result = create_bundle(db, data['Orders'])
         if success:
-            return True, {'ID': result},''
+            return True, {'ID': result},""
         else:
-            return False, '', result
+            return False, "", result
         
     @staticmethod
     def update_bundle(db, data) -> tuple[bool, any, str]:
         if 'ID' not in data:
-            return False, '', '[ID] not found'
+            return False, "", "[ID] not found"
         
         if 'Items' not in data:
-            return False, '', '[Items] not found'
+            return False, "", "[Items] not found"
         
         for item in data['Items']:
             if 'OrderID' not in item or 'Delivery' not in item:
-                return False, '', '[Items] must be list[dict[str("OrderID"):int, str("Delivery"):bool]]'
+                return False, "", "[Items] must be list[dict[str('OrderID'):int, str('Delivery'):bool]]"
 
         from cruds import update_bundle_sequence
         
         status, msg = update_bundle_sequence(db, data['ID'], data['Items'])
 
         if status:
-            return True, '', ''
+            return True, "", ""
         else:
-            return False, '', msg
+            return False, "", msg
     
     @staticmethod
     def delete_order_from_bundle(db, data) -> tuple[bool, any, str]:
         if 'ID' not in data:
-            return False, '', '[ID] not found'
+            return False, "", "[ID] not found"
         from cruds import delete_order_from_bundle
         status, msg = delete_order_from_bundle(db, data['ID'])
 
         if status:
-            return True,'',''
+            return True,"",""
         else:
-            return False, '', msg
+            return False, "", msg
         
     @staticmethod
     def delete_bundle(db, data) -> tuple[bool, any, str]:
         if 'ID' not in data:
-            return False, '', '[ID] not found'
+            return False, "", "[ID] not found"
         from cruds import delete_bundle
         delete_bundle(db, data['ID'])
 
        
-        return True,'',''
+        return True,"",""
         
     
     @staticmethod
     def assign_driver(db, data=None):
         if 'OrderID' not in data:
-            return False, '', '[OrderID] not found'
+            return False, "", "[OrderID] not found"
         if 'DriverUserID' not in data:
-            return False, '', '[DriverUserID] not found'
+            return False, "", "[DriverUserID] not found"
 
         from cruds import assign_driver_to_order
 
         update_status, msg = assign_driver_to_order(db, data['OrderID'], data['DriverUserID'])
 
         if update_status:
-            return True, '',''
+            return True, "",""
         
         else:
-            return False, '', msg
+            return False, "", msg
    
     
     @staticmethod

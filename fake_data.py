@@ -99,9 +99,9 @@ def _generate_sample_orders(db: SQLAlchemy) -> None:
             SenderName = fake.name(),
             RecipientName = fake.name(),
             UserOrderCount = randint(0,10),
-            SenderAddress = f'Random street {randint(1,100)}',
+            SenderAddress = f"Random street {randint(1,100)}",
             TakeoutType = 2,
-            RecipientAddress = f'Random street {randint(1,100)}',
+            RecipientAddress = f"Random street {randint(1,100)}",
             PaymentType = 4,
             Distance = geodesic((lat1, lon1), (lat2, lon2)).kilometers,
             TotalFinal = randint(100,10000)/100

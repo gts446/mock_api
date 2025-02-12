@@ -51,7 +51,7 @@ def create_bundle(db: SQLAlchemy, order_ids:list[str]) -> tuple[bool, any]:
 def update_bundle_sequence(db: SQLAlchemy, bundle_id:int, data:list[dict]) -> tuple[bool, str]:
     priority = 1
     if not data:
-        return False, f'Empty data - {data}'
+        return False, f"Empty data - {data}"
     
     qry = select(BundleItem).where(BundleItem.BundleID == bundle_id)
     bundle_items = db.session.execute(qry).scalars().all()
@@ -69,26 +69,26 @@ def update_bundle_sequence(db: SQLAlchemy, bundle_id:int, data:list[dict]) -> tu
             obj.Priority = priority
             priority += 1
         else:
-            return False, f'Bundle item {sequence_item['OrderID']} not found'
+            return False, f"Bundle item {sequence_item['OrderID']} not found"
 
     db.session.commit()
 
-    return True, 'success'
+    return True, "success"
 
 def delete_order_from_bundle(db: SQLAlchemy, order_id:int) -> tuple[bool, str]:
     qry = select(Order).where(Order.ID == order_id)
     order = db.session.execute(qry).scalars().first()
     if not order:
-        return False, f'Order {order_id} not found'
+        return False, f"Order {order_id} not found"
     if order.BundleID == 0:
-        return False, f'Order {order_id} not in a bundle'
+        return False, f"Order {order_id} not in a bundle"
     
     order.BundleID = 0
 
     db.session.query(BundleItem).filter(BundleItem.OrderID == order_id).delete()
     db.session.commit()
 
-    return True, 'success'
+    return True, "success"
 
 def delete_bundle(db: SQLAlchemy, bundle_id:int) -> None:
     qry = select(Order).where(Order.BundleID == bundle_id)
@@ -104,7 +104,7 @@ def update_order(db: SQLAlchemy, order_id, field_data:dict):
     order = db.session.query(Order).filter_by(ID=order_id).first()
     
     if not order:
-        return False, f'Order [{order_id}] not found'
+        return False, f"Order [{order_id}] not found"
 
     for field, value in field_data.items():
         if hasattr(order, field):
@@ -113,14 +113,14 @@ def update_order(db: SQLAlchemy, order_id, field_data:dict):
             print(f"Warning: {field} is not a valid column")
 
     db.session.commit()
-    return True, 'success'
+    return True, "success"
 
 def assign_driver_to_order(db: SQLAlchemy, order_id:int, driver_id:int):
     qry = select(Order).where(Order.ID == order_id)
     order = db.session.execute(qry).scalars().first()
 
     if not order:
-        return False, f'Order [{order_id}] not found'
+        return False, f"Order [{order_id}] not found"
 
     if order.BundleID != 0:
         qry = select(Order).where(Order.BundleID == order.BundleID)
@@ -141,4 +141,4 @@ def assign_driver_to_order(db: SQLAlchemy, order_id:int, driver_id:int):
 
     db.session.commit()
 
-    return True, 'success'
+    return True, "success"

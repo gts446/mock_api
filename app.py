@@ -25,7 +25,7 @@ def fk():
 @app.route('/', methods=['POST'])
 def hello_world():
     api_request, error_msg = APIRequest.form_request(request)
-
+    pprint(request.form)
     if error_msg:
         pprint(error_msg)
         return error_msg, 400
