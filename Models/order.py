@@ -31,8 +31,8 @@ class Order(db.Model):
     
 
     def to_dict(self):
-        local_tz = pytz.timezone("Europe/Vilnius")
         result = {k:v for k,v in self.__dict__.items() if k != '_sa_instance_state'}
+        local_tz = pytz.timezone("Europe/Vilnius")
         result['PickupDate'] = local_tz.localize(self.PickupDate)
         result['DeliveryDate'] = local_tz.localize(self.DeliveryDate)
         return result

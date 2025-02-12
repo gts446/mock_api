@@ -78,9 +78,9 @@ def _generate_sample_orders(db: SQLAlchemy) -> None:
 
         # location1 = geolocator.reverse((lat1, lon1), exactly_one=True)
         # location2 = geolocator.reverse((lat2, lon2), exactly_one=True)
-
-
-        pickupdate = datetime.now() + timedelta(minutes=randint(1,120)) 
+        import pytz
+        tz = pytz.timezone("Europe/Vilnius")  # Set timezone
+        pickupdate = datetime.now(tz) + timedelta(minutes=randint(1,120)) 
         new_orders.append(Order(
             Type = 1,
             OrderStatus = 3,
